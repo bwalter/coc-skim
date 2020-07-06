@@ -41,7 +41,7 @@ function! coc_skim#symbols#skim_run(...) abort
         \ 'source': initial_command,
         \ 'sink*': function('s:symbol_handler'),
         \ 'options': ['--multi','--expect='.expect_keys, '--bind', 'change:reload:'.reload_command,
-        \ '--phony', '--ansi', '--prompt=' . s:prompt] + g:coc_skim_opts,
+        \ '--ansi', '--prompt=' . s:prompt] + g:coc_skim_opts,
         \ }
   call coc_skim#common#skim_run_with_preview(opts, {'placeholder': '{-1}'})
   call s:syntax()

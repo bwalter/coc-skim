@@ -2,21 +2,21 @@
 
 let s:prompt = 'Coc Commands> '
 
-function! coc_fzf#commands#fzf_run() abort
-  call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
+function! coc_skim#commands#skim_run() abort
+  call coc_skim#common#log_function_call(expand('<sfile>'), a:000)
   let cmds = CocAction('commands')
   if !empty(cmds)
-    let expect_keys = coc_fzf#common#get_default_file_expect_keys()
+    let expect_keys = coc_skim#common#get_default_file_expect_keys()
     let opts = {
           \ 'source': s:get_commands(cmds),
           \ 'sink*': function('s:command_handler'),
           \ 'options': ['--multi', '--expect='.expect_keys,
-          \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
+          \ '--ansi', '--prompt=' . s:prompt] + g:coc_skim_opts,
           \ }
-    call fzf#run(fzf#wrap(opts))
+    call skim#run(skim#wrap(opts))
     call s:syntax()
   else
-    call coc_fzf#common#echom_info('commands list is empty')
+    call coc_skim#common#echom_info('commands list is empty')
   endif
 endfunction
 
@@ -32,15 +32,15 @@ function! s:syntax() abort
   if has('syntax') && exists('g:syntax_on')
     syntax case ignore
     " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_CommandHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_CommandTitle /\s.*$/ contained containedin=CocFzf_CommandHeader
-    syntax match CocFzf_CommandId /^>\?\s*\S\+/ contained  containedin=CocFzf_CommandHeader
-    highlight default link CocFzf_CommandTitle Comment
+    exec 'syntax match CocSkim_CommandHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
+    syntax match CocSkim_CommandTitle /\s.*$/ contained containedin=CocSkim_CommandHeader
+    syntax match CocSkim_CommandId /^>\?\s*\S\+/ contained  containedin=CocSkim_CommandHeader
+    highlight default link CocSkim_CommandTitle Comment
   endif
 endfunction
 
 function! s:command_handler(cmd) abort
-  let cmd = coc_fzf#common#get_action_from_key(a:cmd[0])
+  let cmd = coc_skim#common#get_action_from_key(a:cmd[0])
   if !empty(cmd) && stridx('edit', cmd) < 0
     execute 'silent' cmd
   endif

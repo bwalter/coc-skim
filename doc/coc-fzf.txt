@@ -1,72 +1,72 @@
-*coc-fzf.txt*  fzf :heart: coc.nvim
+*coc-skim.txt*  skim :heart: coc.nvim
 
 ===============================================================================
 Contents ~
 
- 1. Introduction                                         |coc-fzf-introduction|
- 2. Rationale                                               |coc-fzf-rationale|
- 3. Installation                                         |coc-fzf-installation|
- 4. Commands                                                 |coc-fzf-commands|
- 5. Options                                                   |coc-fzf-options|
- 6. Vimrc Example                                       |coc-fzf-vimrc-example|
- 7. FAQ                                                           |coc-fzf-faq|
- 8. License                                                   |coc-fzf-license|
- 9. References                                             |coc-fzf-references|
+ 1. Introduction                                         |coc-skim-introduction|
+ 2. Rationale                                               |coc-skim-rationale|
+ 3. Installation                                         |coc-skim-installation|
+ 4. Commands                                                 |coc-skim-commands|
+ 5. Options                                                   |coc-skim-options|
+ 6. Vimrc Example                                       |coc-skim-vimrc-example|
+ 7. FAQ                                                           |coc-skim-faq|
+ 8. License                                                   |coc-skim-license|
+ 9. References                                             |coc-skim-references|
 
 ===============================================================================
-                                                         *coc-fzf-introduction*
+                                                         *coc-skim-introduction*
 Introduction ~
 
-Use FZF [1] instead of coc.nvim [2] built-in fuzzy finder.
+Use SKIM [1] instead of coc.nvim [2] built-in fuzzy finder.
 
   Image: (see reference [3])
 
 ===============================================================================
-                                                            *coc-fzf-rationale*
+                                                            *coc-skim-rationale*
 Rationale ~
 
-This plugin uses FZF [1] fuzzy finder in place of Coc [2]'s built-in CocList
-sources [4]. It makes the interaction with Coc easier when you are used to FZF.
+This plugin uses SKIM [1] fuzzy finder in place of Coc [2]'s built-in CocList
+sources [4]. It makes the interaction with Coc easier when you are used to SKIM.
 
 The main features are:
-  - FZF preview
-  - FZF bindings for splits and tabs
-  - FZF layout (floating windows etc)
-  - FZF multi-select to populate the quickfix window
+  - SKIM preview
+  - SKIM bindings for splits and tabs
+  - SKIM layout (floating windows etc)
+  - SKIM multi-select to populate the quickfix window
 
 It was inspired by Robert Buhren's functions [5] and coc-denite [6].
 
 ===============================================================================
-                                                         *coc-fzf-installation*
+                                                         *coc-skim-installation*
 Installation ~
 
 Make sure to have the following plugins in your **vimrc**:
 >
   Plug 'coc.nvim',
-  Plug 'junegunn/fzf'
-  Plug 'junegunn/fzf.vim'
-  Plug 'antoinemadec/coc-fzf'
+  Plug 'junegunn/skim'
+  Plug 'junegunn/skim.vim'
+  Plug 'antoinemadec/coc-skim'
 <
 ===============================================================================
-                                                             *coc-fzf-commands*
+                                                             *coc-skim-commands*
 Commands ~
 
 | Command                               | List                                                            | Preview | Multi-select | Vim support | ~
-| `:CocFzfList`                           | Equivalent to :CocList                                          | -       | -            | ✅          |
-| `:CocFzfList actions`                   | Equivalent to :CocList actions                                  | -       | -            | ✅          |
-| `:CocFzfList commands`                  | Equivalent to :CocList commands                                 | -       | -            | ✅          |
-| `:CocFzfList diagnostics`               | Equivalent to :CocList diagnostics                              | ✅      | ✅           | ✅          |
-| `:CocFzfList diagnostics --current-buf` | Equivalent to :CocList diagnostics in the current buffer only   | ✅      | ✅           | ✅          |
-| `:CocFzfList extensions`                | Equivalent to :CocList extensions                               | -       | -            | ✅          |
-| `:CocFzfList location`                  | Equivalent to :CocList location. Requires fzf.vim [7]           | ✅      | ✅           | ✅          |
-| `:CocFzfList outline`                   | Equivalent to :CocList outline, with colors. Requires ctags [8] | -       | ✅           | ✅          |
-| `:CocFzfList symbols`                   | Equivalent to :CocList symbols                                  | ✅      | ✅           | ❌          |
-| `:CocFzfList symbols --kind {kind}`     | Equivalent to :CocList symbols -kind {kind}                     | ✅      | ✅           | ❌          |
-| `:CocFzfList services`                  | Equivalent to :CocList services                                 | -       | -            | ✅          |
-| `:CocFzfList yank`                      | Equivalent to :CocList yank. Requires coc-yank [9]              | ✅      | ✅           | ✅          |
-| `:CocFzfListResume`                     | Equivalent to :CocListResume                                    | -       | -            | ✅          |
+| `:CocSkimList`                           | Equivalent to :CocList                                          | -       | -            | ✅          |
+| `:CocSkimList actions`                   | Equivalent to :CocList actions                                  | -       | -            | ✅          |
+| `:CocSkimList commands`                  | Equivalent to :CocList commands                                 | -       | -            | ✅          |
+| `:CocSkimList diagnostics`               | Equivalent to :CocList diagnostics                              | ✅      | ✅           | ✅          |
+| `:CocSkimList diagnostics --current-buf` | Equivalent to :CocList diagnostics in the current buffer only   | ✅      | ✅           | ✅          |
+| `:CocSkimList extensions`                | Equivalent to :CocList extensions                               | -       | -            | ✅          |
+| `:CocSkimList location`                  | Equivalent to :CocList location. Requires skim.vim [7]           | ✅      | ✅           | ✅          |
+| `:CocSkimList outline`                   | Equivalent to :CocList outline, with colors. Requires ctags [8] | -       | ✅           | ✅          |
+| `:CocSkimList symbols`                   | Equivalent to :CocList symbols                                  | ✅      | ✅           | ❌          |
+| `:CocSkimList symbols --kind {kind}`     | Equivalent to :CocList symbols -kind {kind}                     | ✅      | ✅           | ❌          |
+| `:CocSkimList services`                  | Equivalent to :CocList services                                 | -       | -            | ✅          |
+| `:CocSkimList yank`                      | Equivalent to :CocList yank. Requires coc-yank [9]              | ✅      | ✅           | ✅          |
+| `:CocSkimListResume`                     | Equivalent to :CocListResume                                    | -       | -            | ✅          |
 
-FZF bindings (default):
+SKIM bindings (default):
   - **ctrl-t**: open in tab
   - **ctrl-x**: open in vertical split
   - **ctrl-s**: open in horizontal split
@@ -74,63 +74,63 @@ FZF bindings (default):
   - **?**: toggle preview window
 
 ===============================================================================
-                                                              *coc-fzf-options*
+                                                              *coc-skim-options*
 Options ~
 
 | Option                       | Type   | Description                                                    | Default value             | ~
-| `g:coc_fzf_preview_toggle_key` | string | Change the key to toggle the preview window                    | `'?'`                       |
-| `g:coc_fzf_preview`            | string | Change the preview window position                             | `'up:50%'`                  |
-| `g:coc_fzf_opts`               | array  | Pass additional parameters to fzf, e.g. "['--layout=reverse']" | `['--layout=reverse-list']` |
+| `g:coc_skim_preview_toggle_key` | string | Change the key to toggle the preview window                    | `'?'`                       |
+| `g:coc_skim_preview`            | string | Change the preview window position                             | `'up:50%'`                  |
+| `g:coc_skim_opts`               | array  | Pass additional parameters to skim, e.g. "['--layout=reverse']" | `['--layout=reverse-list']` |
 
 ===============================================================================
-                                                        *coc-fzf-vimrc-example*
+                                                        *coc-skim-vimrc-example*
 Vimrc Example ~
 >
-  nnoremap <silent> <space>a  :<C-u>CocFzfList diagnostics<CR>
-  nnoremap <silent> <space>b  :<C-u>CocFzfList diagnostics --current-buf<CR>
-  nnoremap <silent> <space>c  :<C-u>CocFzfList commands<CR>
-  nnoremap <silent> <space>e  :<C-u>CocFzfList extensions<CR>
-  nnoremap <silent> <space>l  :<C-u>CocFzfList location<CR>
-  nnoremap <silent> <space>o  :<C-u>CocFzfList outline<CR>
-  nnoremap <silent> <space>s  :<C-u>CocFzfList symbols<CR>
-  nnoremap <silent> <space>S  :<C-u>CocFzfList services<CR>
-  nnoremap <silent> <space>p  :<C-u>CocFzfListResume<CR>
+  nnoremap <silent> <space>a  :<C-u>CocSkimList diagnostics<CR>
+  nnoremap <silent> <space>b  :<C-u>CocSkimList diagnostics --current-buf<CR>
+  nnoremap <silent> <space>c  :<C-u>CocSkimList commands<CR>
+  nnoremap <silent> <space>e  :<C-u>CocSkimList extensions<CR>
+  nnoremap <silent> <space>l  :<C-u>CocSkimList location<CR>
+  nnoremap <silent> <space>o  :<C-u>CocSkimList outline<CR>
+  nnoremap <silent> <space>s  :<C-u>CocSkimList symbols<CR>
+  nnoremap <silent> <space>S  :<C-u>CocSkimList services<CR>
+  nnoremap <silent> <space>p  :<C-u>CocSkimListResume<CR>
 <
 ===============================================================================
-                                                                  *coc-fzf-faq*
+                                                                  *coc-skim-faq*
 FAQ ~
 
-**Q**: How to get the FZF floating window?
-**A**: You can look at FZF Vim integration [10]:
+**Q**: How to get the SKIM floating window?
+**A**: You can look at SKIM Vim integration [10]:
 >
-  let g:fzf_layout = { 'window`: { 'width`: 0.9, 'height': 0.6 } }
+  let g:skim_layout = { 'window`: { 'width`: 0.9, 'height': 0.6 } }
 <
-**Q**: CocFzf looks different from my other Fzf commands. How to make it the same?
-**A**: By default, CocFzf tries to mimic CocList. Here is how to change this:
+**Q**: CocSkim looks different from my other Skim commands. How to make it the same?
+**A**: By default, CocSkim tries to mimic CocList. Here is how to change this:
 >
-  let g:coc_fzf_preview = ''
-  let g:coc_fzf_opts = []
+  let g:coc_skim_preview = ''
+  let g:coc_skim_opts = []
 <
 
 ===============================================================================
-                                                              *coc-fzf-license*
+                                                              *coc-skim-license*
 License ~
 
 MIT
 
 ===============================================================================
-                                                           *coc-fzf-references*
+                                                           *coc-skim-references*
 References ~
 
-[1] https://github.com/junegunn/fzf
+[1] https://github.com/junegunn/skim
 [2] https://github.com/neoclide/coc.nvim
-[3] https://raw.githubusercontent.com/antoinemadec/gif/master/coc_fzf.gif
+[3] https://raw.githubusercontent.com/antoinemadec/gif/master/coc_skim.gif
 [4] https://github.com/neoclide/coc.nvim/wiki/Using-coc-list#builtin-list-sources
 [5] https://gist.github.com/RobertBuhren/02e05506255c667c0038ce74ee1cef96
 [6] https://github.com/neoclide/coc-denite
-[7] https://github.com/junegunn/fzf.vim
+[7] https://github.com/junegunn/skim.vim
 [8] https://github.com/universal-ctags/ctags
 [9] https://github.com/neoclide/coc-yank
-[10] https://github.com/junegunn/fzf/blob/master/README-VIM.md
+[10] https://github.com/junegunn/skim/blob/master/README-VIM.md
 
 vim: ft=help

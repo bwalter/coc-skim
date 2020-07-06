@@ -2,27 +2,27 @@
 
 let s:prompt = 'Coc Extensions> '
 
-function! coc_fzf#extensions#fzf_run(...) abort
-  call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
+function! coc_skim#extensions#skim_run(...) abort
+  call coc_skim#common#log_function_call(expand('<sfile>'), a:000)
   let first_call = a:0 ? a:1 : 1
   let exts = CocAction('extensionStats')
   if !empty(exts)
-    let expect_keys = coc_fzf#common#get_default_file_expect_keys()
+    let expect_keys = coc_skim#common#get_default_file_expect_keys()
     let opts = {
           \ 'source': s:get_extensions(exts),
           \ 'sink*': function('s:extension_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
-          \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
+          \ '--ansi', '--prompt=' . s:prompt] + g:coc_skim_opts,
           \ }
-    call fzf#run(fzf#wrap(opts))
-    call coc_fzf#common#remap_enter_to_save_fzf_selector()
+    call skim#run(skim#wrap(opts))
+    call coc_skim#common#remap_enter_to_save_skim_selector()
     call s:syntax()
     if (!first_call)
       call feedkeys('i')
-      call coc_fzf#common#fzf_selector_restore()
+      call coc_skim#common#skim_selector_restore()
     endif
   else
-    call coc_fzf#common#echom_info('extensions list is empty')
+    call coc_skim#common#echom_info('extensions list is empty')
   endif
 endfunction
 
@@ -51,19 +51,19 @@ function! s:syntax() abort
   if has('syntax') && exists('g:syntax_on')
     syntax case ignore
     " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_ExtensionHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_ExtensionRoot /\v\s*\f+$/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ExtensionActivited /\v^\>?\s+\*/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ExtensionLoaded /\v^\>?\s+\+\s/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ExtensionDisabled /\v^\>?\s+-\s/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ExtensionName /\v%5c\S+/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ExtensionsLocal /\v\[RTP\]/ contained containedin=CocFzf_ExtensionHeader
-    highlight default link CocFzf_ExtensionRoot Comment
-    highlight default link CocFzf_ExtensionDisabled Comment
-    highlight default link CocFzf_ExtensionActivited MoreMsg
-    highlight default link CocFzf_ExtensionLoaded Normal
-    highlight default link CocFzf_ExtensionName String
-    highlight default link CocFzf_ExtensionsLocal MoreMsg
+    exec 'syntax match CocSkim_ExtensionHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
+    syntax match CocSkim_ExtensionRoot /\v\s*\f+$/ contained containedin=CocSkim_ExtensionHeader
+    syntax match CocSkim_ExtensionActivited /\v^\>?\s+\*/ contained containedin=CocSkim_ExtensionHeader
+    syntax match CocSkim_ExtensionLoaded /\v^\>?\s+\+\s/ contained containedin=CocSkim_ExtensionHeader
+    syntax match CocSkim_ExtensionDisabled /\v^\>?\s+-\s/ contained containedin=CocSkim_ExtensionHeader
+    syntax match CocSkim_ExtensionName /\v%5c\S+/ contained containedin=CocSkim_ExtensionHeader
+    syntax match CocSkim_ExtensionsLocal /\v\[RTP\]/ contained containedin=CocSkim_ExtensionHeader
+    highlight default link CocSkim_ExtensionRoot Comment
+    highlight default link CocSkim_ExtensionDisabled Comment
+    highlight default link CocSkim_ExtensionActivited MoreMsg
+    highlight default link CocSkim_ExtensionLoaded Normal
+    highlight default link CocSkim_ExtensionName String
+    highlight default link CocSkim_ExtensionsLocal MoreMsg
   endif
 endfunction
 
@@ -75,7 +75,7 @@ function! s:extension_handler(ext) abort
     elseif parsed.state == '+'
       silent call CocAction('activeExtension', parsed.id)
     endif
-    call coc_fzf#extensions#fzf_run(0)
+    call coc_skim#extensions#skim_run(0)
   endif
 endfunction
 

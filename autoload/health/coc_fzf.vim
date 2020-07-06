@@ -14,23 +14,23 @@ function s:check_ctags() abort
   endif
 endfunction
 
-function s:check_fzf_vim() abort
-  call health#report_start('fzf.vim (optional)')
-  let got_fzf_vim = 1
+function s:check_skim_vim() abort
+  call health#report_start('skim.vim (optional)')
+  let got_skim_vim = 1
   try
-    call fzf#vim#with_preview()
+    call skim#vim#with_preview()
   catch
-    let got_fzf_vim = 0
+    let got_skim_vim = 0
   endtry
-  if got_fzf_vim
-    call health#report_ok('fzf.vim found')
+  if got_skim_vim
+    call health#report_ok('skim.vim found')
   else
-    call health#report_warn("fzf.vim not found. 'location' won't work, previews won't be available",
-          \ ['Install the following vim plugin', "  Plug 'junegunn/fzf.vim'"])
+    call health#report_warn("skim.vim not found. 'location' won't work, previews won't be available",
+          \ ['Install the following vim plugin', "  Plug 'junegunn/skim.vim'"])
   endif
 endfunction
 
-function! health#coc_fzf#check() abort
+function! health#coc_skim#check() abort
   call s:check_ctags()
-  call s:check_fzf_vim()
+  call s:check_skim_vim()
 endfunction

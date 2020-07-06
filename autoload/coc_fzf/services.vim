@@ -2,27 +2,27 @@
 
 let s:prompt = 'Coc Services> '
 
-function! coc_fzf#services#fzf_run(...) abort
-  call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
+function! coc_skim#services#skim_run(...) abort
+  call coc_skim#common#log_function_call(expand('<sfile>'), a:000)
   let first_call = a:0 ? a:1 : 1
   let serv = CocAction('services')
   if !empty(serv)
-    let expect_keys = coc_fzf#common#get_default_file_expect_keys()
+    let expect_keys = coc_skim#common#get_default_file_expect_keys()
     let opts = {
           \ 'source': s:get_services(serv),
           \ 'sink*': function('s:service_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
-          \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
+          \ '--ansi', '--prompt=' . s:prompt] + g:coc_skim_opts,
           \ }
-    call fzf#run(fzf#wrap(opts))
-    call coc_fzf#common#remap_enter_to_save_fzf_selector()
+    call skim#run(skim#wrap(opts))
+    call coc_skim#common#remap_enter_to_save_skim_selector()
     call s:syntax()
     if (!first_call)
       call feedkeys('i')
-      call coc_fzf#common#fzf_selector_restore()
+      call coc_skim#common#skim_selector_restore()
     endif
   else
-    call coc_fzf#common#echom_info('services list is empty')
+    call coc_skim#common#echom_info('services list is empty')
   endif
 endfunction
 
@@ -44,15 +44,15 @@ function! s:syntax() abort
   if has('syntax') && exists('g:syntax_on')
     syntax case ignore
     " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_ExtensionHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_ServiceStar /\v^\>?\s+\*/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ServiceName /\v%4c[^[]*(\[)@=/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ServiceState /\v\[[^[\]]*\]/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ServiceLanguages /\v(\])@<=.*$/ contained containedin=CocFzf_ExtensionHeader
-    highlight default link CocFzf_ServiceStar Special
-    highlight default link CocFzf_ServiceName Type
-    highlight default link CocFzf_ServiceState Statement
-    highlight default link CocFzf_ServiceLanguages Comment
+    exec 'syntax match CocSkim_ExtensionHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
+    syntax match CocSkim_ServiceStar /\v^\>?\s+\*/ contained containedin=CocSkim_ExtensionHeader
+    syntax match CocSkim_ServiceName /\v%4c[^[]*(\[)@=/ contained containedin=CocSkim_ExtensionHeader
+    syntax match CocSkim_ServiceState /\v\[[^[\]]*\]/ contained containedin=CocSkim_ExtensionHeader
+    syntax match CocSkim_ServiceLanguages /\v(\])@<=.*$/ contained containedin=CocSkim_ExtensionHeader
+    highlight default link CocSkim_ServiceStar Special
+    highlight default link CocSkim_ServiceName Type
+    highlight default link CocSkim_ServiceState Statement
+    highlight default link CocSkim_ServiceLanguages Comment
   endif
 endfunction
 
@@ -60,7 +60,7 @@ function! s:service_handler(ext) abort
   let parsed = s:parse_service(a:ext[1:])
   if type(parsed) == v:t_dict
     silent call CocAction('toggleService', parsed.id)
-    call coc_fzf#services#fzf_run(0)
+    call coc_skim#services#skim_run(0)
   endif
 endfunction
 

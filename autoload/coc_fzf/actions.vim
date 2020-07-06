@@ -2,21 +2,21 @@
 
 let s:prompt = 'Coc Actions> '
 
-function! coc_fzf#actions#fzf_run() abort
-  call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  let g:coc_fzf_actions = CocAction('codeActions')
-  if !empty(g:coc_fzf_actions)
-    let expect_keys = coc_fzf#common#get_default_file_expect_keys()
+function! coc_skim#actions#skim_run() abort
+  call coc_skim#common#log_function_call(expand('<sfile>'), a:000)
+  let g:coc_skim_actions = CocAction('codeActions')
+  if !empty(g:coc_skim_actions)
+    let expect_keys = coc_skim#common#get_default_file_expect_keys()
     let opts = {
           \ 'source': s:get_actions(),
           \ 'sink*': function('s:action_handler'),
           \ 'options': ['--multi', '--expect='.expect_keys,
-          \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
+          \ '--ansi', '--prompt=' . s:prompt] + g:coc_skim_opts,
           \ }
-    call fzf#run(fzf#wrap(opts))
+    call skim#run(skim#wrap(opts))
     call s:syntax()
   else
-    call coc_fzf#common#echom_info('actions list is empty')
+    call coc_skim#common#echom_info('actions list is empty')
   endif
 endfunction
 
@@ -30,7 +30,7 @@ function! s:format_coc_action(item) abort
 endfunction
 
 function! s:get_actions() abort
-  let entries = map(copy(g:coc_fzf_actions), 's:format_coc_action(v:val)')
+  let entries = map(copy(g:coc_skim_actions), 's:format_coc_action(v:val)')
   let index = 0
   while index < len(entries)
      let entries[index] .= ' ' . index
@@ -43,26 +43,26 @@ function! s:syntax() abort
   if has('syntax') && exists('g:syntax_on')
     syntax case ignore
     " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_ActionHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_ActionKind /([^)]\+)/ contained containedin=CocFzf_ActionHeader
-    syntax match CocFzf_ActionId /\[[^\]]\+\]/ contained containedin=CocFzf_ActionHeader
-    syntax match CocFzf_ActionTitle /^>\?\s*[^\[]\+/ contained  containedin=CocFzf_ActionHeader
-    syntax match CocFzf_ActionIndex /\d\+$/ contained containedin=CocFzf_ActionHeader
-    highlight default link CocFzf_ActionIndex Ignore
-    highlight default link CocFzf_ActionTitle Normal
-    highlight default link CocFzf_ActionId Type
-    highlight default link CocFzf_ActionKind Comment
+    exec 'syntax match CocSkim_ActionHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
+    syntax match CocSkim_ActionKind /([^)]\+)/ contained containedin=CocSkim_ActionHeader
+    syntax match CocSkim_ActionId /\[[^\]]\+\]/ contained containedin=CocSkim_ActionHeader
+    syntax match CocSkim_ActionTitle /^>\?\s*[^\[]\+/ contained  containedin=CocSkim_ActionHeader
+    syntax match CocSkim_ActionIndex /\d\+$/ contained containedin=CocSkim_ActionHeader
+    highlight default link CocSkim_ActionIndex Ignore
+    highlight default link CocSkim_ActionTitle Normal
+    highlight default link CocSkim_ActionId Type
+    highlight default link CocSkim_ActionKind Comment
   endif
 endfunction
 
 function! s:action_handler(act) abort
-  let cmd = coc_fzf#common#get_action_from_key(a:act[0])
+  let cmd = coc_skim#common#get_action_from_key(a:act[0])
   if !empty(cmd) && stridx('edit', cmd) < 0
     execute 'silent' cmd
   endif
   let index = s:parse_action(a:act[1:])
   if type(index) == v:t_number
-    call CocAction('doCodeAction', g:coc_fzf_actions[index])
+    call CocAction('doCodeAction', g:coc_skim_actions[index])
   endif
 endfunction
 

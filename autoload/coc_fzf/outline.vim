@@ -2,16 +2,16 @@
 
 let s:prompt = 'Coc Outline> '
 
-function! coc_fzf#outline#fzf_run() abort
-  call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  let expect_keys = coc_fzf#common#get_default_file_expect_keys()
+function! coc_skim#outline#skim_run() abort
+  call coc_skim#common#log_function_call(expand('<sfile>'), a:000)
+  let expect_keys = coc_skim#common#get_default_file_expect_keys()
   let opts = {
         \ 'source': s:get_outline(),
         \ 'sink*': function('s:symbol_handler'),
         \ 'options': ['--multi','--expect='.expect_keys,
-        \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
+        \ '--ansi', '--prompt=' . s:prompt] + g:coc_skim_opts,
         \ }
-  call fzf#run(fzf#wrap(opts))
+  call skim#run(skim#wrap(opts))
   call s:syntax()
 endfunction
 
@@ -66,21 +66,21 @@ function! s:syntax() abort
   if has('syntax') && exists('g:syntax_on')
     syntax case ignore
     " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_OutlineHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_OutlineSymbol /\v^>\?\s*\S\+/ contained containedin=CocFzf_OutlineHeader
-    syntax match CocFzf_OutlineType /\v\s\[.*\]/ contained containedin=CocFzf_OutlineHeader
-    syntax match CocFzf_OutlineLine /\s\d\+/ contained containedin=CocFzf_OutlineHeader
-    syntax match CocFzf_OutlineColumn /,\d\+$/ contained containedin=CocFzf_OutlineHeader
-    highlight default link CocFzf_OutlineSymbol Normal
-    highlight default link CocFzf_OutlineType Typedef
-    highlight default link CocFzf_OutlineLine Comment
-    highlight default link CocFzf_OutlineColumn Ignore
+    exec 'syntax match CocSkim_OutlineHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
+    syntax match CocSkim_OutlineSymbol /\v^>\?\s*\S\+/ contained containedin=CocSkim_OutlineHeader
+    syntax match CocSkim_OutlineType /\v\s\[.*\]/ contained containedin=CocSkim_OutlineHeader
+    syntax match CocSkim_OutlineLine /\s\d\+/ contained containedin=CocSkim_OutlineHeader
+    syntax match CocSkim_OutlineColumn /,\d\+$/ contained containedin=CocSkim_OutlineHeader
+    highlight default link CocSkim_OutlineSymbol Normal
+    highlight default link CocSkim_OutlineType Typedef
+    highlight default link CocSkim_OutlineLine Comment
+    highlight default link CocSkim_OutlineColumn Ignore
   endif
 endfunction
 
 function! s:symbol_handler(sym) abort
   let parsed_dict_list = s:parse_symbol(a:sym[1:])
-  call coc_fzf#common#process_file_action(a:sym[0], parsed_dict_list)
+  call coc_skim#common#process_file_action(a:sym[0], parsed_dict_list)
 endfunction
 
 function! s:parse_symbol(sym) abort

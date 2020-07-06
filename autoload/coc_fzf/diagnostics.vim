@@ -2,22 +2,22 @@
 
 let s:prompt = 'Coc Diagnostics> '
 
-function! coc_fzf#diagnostics#fzf_run(...) abort
-  call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
+function! coc_skim#diagnostics#skim_run(...) abort
+  call coc_skim#common#log_function_call(expand('<sfile>'), a:000)
   let current_buffer_only = index(a:000, '--current-buf') >= 0
   let diags = CocAction('diagnosticList')
   if !empty(diags)
-    let expect_keys = coc_fzf#common#get_default_file_expect_keys()
+    let expect_keys = coc_skim#common#get_default_file_expect_keys()
     let opts = {
           \ 'source': s:get_diagnostics(diags, l:current_buffer_only),
           \ 'sink*': function('s:error_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
-          \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
+          \ '--ansi', '--prompt=' . s:prompt] + g:coc_skim_opts,
           \ }
-    call coc_fzf#common#fzf_run_with_preview(opts)
+    call coc_skim#common#skim_run_with_preview(opts)
     call s:syntax()
   else
-    call coc_fzf#common#echom_info('diagnostics list is empty')
+    call coc_skim#common#echom_info('diagnostics list is empty')
   endif
 endfunction
 
@@ -45,23 +45,23 @@ function! s:syntax() abort
   if has('syntax') && exists('g:syntax_on')
     syntax case ignore
     " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_DiagnosticHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_DiagnosticFile /^>\?\s*\S\+/ contained containedin=CocFzf_DiagnosticHeader
-    syntax match CocFzf_DiagnosticError /\sError\s/ contained containedin=CocFzf_DiagnosticHeader
-    syntax match CocFzf_DiagnosticWarning /\sWarning\s/ contained containedin=CocFzf_DiagnosticHeader
-    syntax match CocFzf_DiagnosticInfo /\sInformation\s/ contained containedin=CocFzf_DiagnosticHeader
-    syntax match CocFzf_DiagnosticHint /\sHint\s/ contained containedin=CocFzf_DiagnosticHeader
-    highlight default link CocFzf_DiagnosticFile Comment
-    highlight default link CocFzf_DiagnosticError CocErrorSign
-    highlight default link CocFzf_DiagnosticWarning CocWarningSign
-    highlight default link CocFzf_DiagnosticInfo CocInfoSign
-    highlight default link CocFzf_DiagnosticHint CocHintSign
+    exec 'syntax match CocSkim_DiagnosticHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
+    syntax match CocSkim_DiagnosticFile /^>\?\s*\S\+/ contained containedin=CocSkim_DiagnosticHeader
+    syntax match CocSkim_DiagnosticError /\sError\s/ contained containedin=CocSkim_DiagnosticHeader
+    syntax match CocSkim_DiagnosticWarning /\sWarning\s/ contained containedin=CocSkim_DiagnosticHeader
+    syntax match CocSkim_DiagnosticInfo /\sInformation\s/ contained containedin=CocSkim_DiagnosticHeader
+    syntax match CocSkim_DiagnosticHint /\sHint\s/ contained containedin=CocSkim_DiagnosticHeader
+    highlight default link CocSkim_DiagnosticFile Comment
+    highlight default link CocSkim_DiagnosticError CocErrorSign
+    highlight default link CocSkim_DiagnosticWarning CocWarningSign
+    highlight default link CocSkim_DiagnosticInfo CocInfoSign
+    highlight default link CocSkim_DiagnosticHint CocHintSign
   endif
 endfunction
 
 function! s:error_handler(err) abort
   let parsed_dict_list = s:parse_error(a:err[1:])
-  call coc_fzf#common#process_file_action(a:err[0], parsed_dict_list)
+  call coc_skim#common#process_file_action(a:err[0], parsed_dict_list)
 endfunction
 
 function! s:parse_error(err) abort

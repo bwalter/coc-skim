@@ -1,8 +1,8 @@
-" functions copied from fzf-vim
+" functions copied from skim-vim
 
 let s:TYPE = {'dict': type({}), 'funcref': type(function('call')), 'string': type(''), 'list': type([])}
 
-function! coc_fzf#common_fzf_vim#merge_opts(dict, eopts)
+function! coc_skim#common_skim_vim#merge_opts(dict, eopts)
   return s:extend_opts(a:dict, a:eopts, 0)
 endfunction
 
@@ -19,7 +19,7 @@ function! s:extend_opts(dict, eopts, prepend)
       endif
     else
       let all_opts = a:prepend ? [a:eopts, a:dict.options] : [a:dict.options, a:eopts]
-      let a:dict.options = join(map(all_opts, 'type(v:val) == s:TYPE.list ? join(map(copy(v:val), "fzf#shellescape(v:val)")) : v:val'))
+      let a:dict.options = join(map(all_opts, 'type(v:val) == s:TYPE.list ? join(map(copy(v:val), "skim#shellescape(v:val)")) : v:val'))
     endif
   else
     let a:dict.options = a:eopts

@@ -3,29 +3,29 @@
 let s:prompt = 'Coc Yank> '
 let s:yank_relative_file_path = '/coc-yank-data/yank'
 
-function! coc_fzf#yank#fzf_run() abort
-  call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  if !coc_fzf#common#coc_has_extension('coc-yank')
-    call coc_fzf#common#echom_error("coc-yank is not installed")
+function! coc_skim#yank#skim_run() abort
+  call coc_skim#common#log_function_call(expand('<sfile>'), a:000)
+  if !coc_skim#common#coc_has_extension('coc-yank')
+    call coc_skim#common#echom_error("coc-yank is not installed")
     return
   endif
   let yank_file_path = coc#util#extension_root() . s:yank_relative_file_path
   try
     let raw_yanks = readfile(l:yank_file_path)
   catch
-    call coc_fzf#common#echom_info("yank file cannot be found")
+    call coc_skim#common#echom_info("yank file cannot be found")
     return
   endtry
   let opts = {
         \ 'source': s:get_yanks(raw_yanks),
         \ 'sink*': function('s:yank_handler'),
-        \ 'options': ['--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts
+        \ 'options': ['--ansi', '--prompt=' . s:prompt] + g:coc_skim_opts
         \ }
-  let opts = coc_fzf#common#with_preview(
+  let opts = coc_skim#common#with_preview(
     \   opts,
-    \   g:coc_fzf_plugin_dir . '/script/yank_preview.sh {}',
+    \   g:coc_skim_plugin_dir . '/script/yank_preview.sh {}',
     \ )
-  call fzf#run(fzf#wrap(opts))
+  call skim#run(skim#wrap(opts))
   call s:syntax()
 endfunction
 
@@ -75,11 +75,11 @@ function! s:syntax() abort
   if has('syntax') && exists('g:syntax_on')
     syntax case ignore
     " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_YankHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_YankType /^>\?\s*\(line\|char\|block\)/ contained containedin=CocFzf_YankHeader
-    syntax match CocFzf_YankFileType /\[ft=\w*\]/ contained containedin=CocFzf_YankHeader
-    highlight default link CocFzf_YankType Typedef
-    highlight default link CocFzf_YankFileType Ignore
+    exec 'syntax match CocSkim_YankHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
+    syntax match CocSkim_YankType /^>\?\s*\(line\|char\|block\)/ contained containedin=CocSkim_YankHeader
+    syntax match CocSkim_YankFileType /\[ft=\w*\]/ contained containedin=CocSkim_YankHeader
+    highlight default link CocSkim_YankType Typedef
+    highlight default link CocSkim_YankFileType Ignore
   endif
 endfunction
 
